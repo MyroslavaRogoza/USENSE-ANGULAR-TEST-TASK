@@ -1,0 +1,13 @@
+.title {
+  text-align: center;
+  color: rgb(0, 191, 244);
+  margin: 40px 0;
+}
+
+.password-strength-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+

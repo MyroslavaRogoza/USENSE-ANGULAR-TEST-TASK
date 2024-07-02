@@ -1,17 +1,14 @@
+import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { NgClass, UpperCasePipe } from '@angular/common';
-import { PasswordStrengthComponent } from './components/password-strength/password-strength.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-password-strength',
   standalone: true,
-  imports: [RouterOutlet, NgClass, UpperCasePipe, PasswordStrengthComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  imports: [NgClass],
+  templateUrl: './password-strength.component.html',
+  styleUrl: './password-strength.component.css'
 })
-export class AppComponent {
-  title = 'usense-angular-test-task';
+export class PasswordStrengthComponent {
   inputValue: string = '';
   firstIndicator: string = 'gray';
   secondIndicator: string = 'gray';
@@ -52,4 +49,5 @@ export class AppComponent {
     this.secondIndicator = second;
     this.thirdIndicator = third;
   }
+
 }
