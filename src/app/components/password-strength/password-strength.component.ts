@@ -1,12 +1,14 @@
-import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { PasswordStrengthService } from '../../services/password-strength.service';
 
 @Component({
   selector: 'app-password-strength',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, ReactiveFormsModule],
   templateUrl: './password-strength.component.html',
-  styleUrl: './password-strength.component.css'
+  styleUrl: './password-strength.component.css',
 })
 export class PasswordStrengthComponent {
   inputValue: string = '';
@@ -14,40 +16,47 @@ export class PasswordStrengthComponent {
   secondIndicator: string = 'gray';
   thirdIndicator: string = 'gray';
 
-  onInputChamge(event: Event) {
-    const alphanumericSymbols =
-      /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/;
-    const combination =
-      /(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])|(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-    const lsnRegex = /^(?=.*[a-zA-Z])(?=.*[\W_])(?=.*\d).+$/;
-
-    const target = event.target as HTMLInputElement;
-    this.inputValue = target.value;
-
-    if (
-      this.inputValue.length >= 8 &&
-      alphanumericSymbols.test(this.inputValue)
-    ) {
-      this.setIndicators('red', 'gray', 'gray');
-    }
-    if (this.inputValue.length >= 8 && combination.test(this.inputValue)) {
-      this.setIndicators('yellow', 'yellow', 'gray');
-    }
-    if (this.inputValue.length >= 8 && lsnRegex.test(this.inputValue)) {
-      this.setIndicators('green', 'green', 'green');
-    }
-
-    if (this.inputValue.length < 8) {
-      this.setIndicators('red', 'red', 'red');
-    }
-    if (this.inputValue.length === 0) {
-      this.setIndicators('gray', 'gray', 'gray');
-    }
+  public form: FormGroup = new FormGroup({
+    password: new FormControl(''),
+  });
+  private setIndicators(
+    firstColor: string,
+    secondColor: string,
+    thirdColor: string
+  ) {
+    this.firstIndicator = firstColor;
+    this.secondIndicator = secondColor;
+    this.thirdIndicator = thirdColor;
   }
-  private setIndicators(first: string, second: string, third: string) {
-    this.firstIndicator = first;
-    this.secondIndicator = second;
-    this.thirdIndicator = third;
+  constructor(private passwordStrength: PasswordStrengthService) {
+    this.form.valueChanges.subscribe((value) => {
+      this.onInputChange(value.password);
+    });
   }
 
+  private onInputChange(inputValue: string) {
+    let strength = this.passwordStrength.checkPasswordStrength(inputValue);
+    console.log(strength);
+
+    switch (strength) {
+      case 'easy':
+        this.setIndicators('red', 'gray', 'gray');
+        break;
+      case 'medium':
+        this.setIndicators('yellow', 'yellow', 'gray');
+        break;
+      case 'strong':
+        this.setIndicators('green', 'green', 'green');
+        break;
+      case 'not enough':
+        this.setIndicators('red', 'red', 'red');
+        break;
+      case 'empty':
+        this.setIndicators('gray', 'gray', 'gray');
+        break;
+      default:
+        this.setIndicators('gray', 'gray', 'gray');
+        break;
+    }
+  }
 }
