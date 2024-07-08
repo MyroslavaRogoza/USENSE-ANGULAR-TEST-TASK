@@ -1,0 +1,10 @@
+.password-field {
+  padding: 4px 8px;
+}
+
+.password-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}

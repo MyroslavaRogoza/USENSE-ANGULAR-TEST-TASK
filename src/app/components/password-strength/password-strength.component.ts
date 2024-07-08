@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { PasswordStrengthService } from '../../services/password-strength.service';
+import { CustomInputComponent } from '../custom-input/custom-input.component';
 
 @Component({
   selector: 'app-password-strength',
   standalone: true,
-  imports: [NgClass, ReactiveFormsModule],
+  imports: [NgClass, ReactiveFormsModule, CustomInputComponent],
   templateUrl: './password-strength.component.html',
   styleUrl: './password-strength.component.css',
 })

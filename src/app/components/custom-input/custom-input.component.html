@@ -1,0 +1,10 @@
+<label class="password-label">
+  <p>{{ label }}</p>
+  <input
+    type="password"
+    placeholder="Enter password..."
+    class="password-field"
+    id="password"
+    [value]="value"
+    (input)="onInputChange($event)"
+/></label>
